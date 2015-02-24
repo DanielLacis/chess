@@ -4,13 +4,13 @@ class Pawn < Piece
   ATTACKS = { black: [[1, -1], [1, 1]],
               white: [[-1, -1], [-1, 1]] }
 
-  attr_reader :symbol
+  attr_accessor :symbol, :attacks, :moved, :deltas
 
   def initialize(color, position, board)
     super(color, position, board)
     set_symbol
     @moved = false
-    @moves = DELTAS[color]
+    @deltas = DELTAS[color]
     @attacks = ATTACKS[color]
   end
 
@@ -26,7 +26,7 @@ class Pawn < Piece
   def first_moves
     valid_moves = standard_moves
     unless valid_moves.empty?
-      current_move = sum_positions(@position, @moves.last)
+      current_move = sum_positions(@position, @deltas.last)
       valid_moves << current_move if valid_move?(current_move)
     end
     valid_moves
@@ -34,7 +34,7 @@ class Pawn < Piece
 
   def standard_moves
     valid_moves = []
-    current_move = sum_positions(@position, @moves.first)
+    current_move = sum_positions(@position, @deltas.first)
     valid_moves << current_move if valid_move?(current_move)
     valid_moves
   end
@@ -57,6 +57,6 @@ class Pawn < Piece
   end
 
   def set_symbol
-    @symbol = color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
+    @symbol = @color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
   end
 end

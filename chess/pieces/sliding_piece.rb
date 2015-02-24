@@ -1,4 +1,5 @@
 class SlidingPiece < Piece
+  
   def initialize(color, position, board, vectors)
     super(color, position, board)
     @vectors = vectors

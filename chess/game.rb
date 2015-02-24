@@ -1,1 +1,5 @@
-require_relative './'
+require_relative './board'
+require_relative './player'
+require_relative './pieces'
+require 'yaml'
+require 'byebug'

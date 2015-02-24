@@ -9,6 +9,6 @@ class Bishop < SlidingPiece
   end
 
   def set_symbol
-    @symbol = color == :white ? ["2657".hex].pack("U") : ["265D".hex].pack("U")
+    @symbol = @color == :white ? ["2657".hex].pack("U") : ["265D".hex].pack("U")
   end
 end

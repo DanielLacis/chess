@@ -9,6 +9,6 @@ class Rook < SlidingPiece
   end
 
   def set_symbol
-    @symbol = color == :white ? ["2656".hex].pack("U") : ["265C".hex].pack("U")
+    @symbol = @color == :white ? ["2656".hex].pack("U") : ["265C".hex].pack("U")
   end
 end

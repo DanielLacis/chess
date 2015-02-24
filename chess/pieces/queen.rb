@@ -9,6 +9,6 @@ class Queen < SlidingPiece
   end
 
   def set_symbol
-    @symbol = color == :white ? ["2655".hex].pack("U") : ["265B".hex].pack("U")
+    @symbol = @color == :white ? ["2655".hex].pack("U") : ["265B".hex].pack("U")
   end
 end

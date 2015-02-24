@@ -11,6 +11,6 @@ class Knight < SteppingPiece
   end
 
   def set_symbol
-    @symbol = color == :white ? ["2658".hex].pack("U") : ["265E".hex].pack("U")
+    @symbol = @color == :white ? ["2658".hex].pack("U") : ["265E".hex].pack("U")
   end
 end
