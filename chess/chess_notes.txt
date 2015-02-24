@@ -1,0 +1,19 @@
+board
+
+
+
+piece
+  sliding
+    bishop
+    rook
+    queen
+  stepping
+    king
+    knight
+  pawn
+
+
+game
+
+
+http://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
