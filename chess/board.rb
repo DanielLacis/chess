@@ -37,26 +37,23 @@ class Board
     self[[7, 6]] = Knight.new(:white, [7, 6], self)
     self[[7, 7]] = Rook.new(:white, [7, 7], self)
 
+    # # near stalemate/checkmate
     # self[[0, 0]] = King.new(:white, [0, 0], self)
     # self[[1, 2]] = Queen.new(:black, [1, 2], self)
     # self[[2, 2]] = King.new(:black, [2, 2], self)
   end
 
   def move(start_pos, end_pos)
-    begin
-      validate_move(start_pos, end_pos)
-    rescue
-      puts "error was thrown"
-      return
-    end
+    validate_move(start_pos, end_pos)
     move_piece(start_pos, end_pos)
   end
 
   def validate_move(start_pos, end_pos)
-    raise "No piece there" if empty?(start_pos)
-    raise "Invalid move" unless self[start_pos].moves.include?(end_pos)
+    unless self[start_pos].moves.include?(end_pos)
+      raise PieceError.new("Invalid move")
+    end
     if self[start_pos].move_into_check?(end_pos)
-      raise "Can't end turn in Check"
+      raise PieceError.new("Can't end turn in Check")
     end
   end
 
