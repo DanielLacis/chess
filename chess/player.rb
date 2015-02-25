@@ -9,9 +9,11 @@ class HumanPlayer
     begin
       make_move(get_move(board), board)
     rescue PieceError => e
+      board.display
       puts e
       retry
     rescue ParsingError => e
+      board.display
       puts e
       retry
     end
@@ -24,6 +26,9 @@ class HumanPlayer
     unless board[start_pos].color == @color
       raise PieceError.new("Wrong piece color")
     end
+
+    board.valid_moves_display(board[start_pos])
+
     puts "Please enter the position you would like to move to: "
     end_pos = parse_input
     [start_pos, end_pos]
