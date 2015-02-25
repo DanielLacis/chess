@@ -1,4 +1,6 @@
 class HumanPlayer
+  INPUT_HASH = { "A" => 0, "B" => 1, "C" => 2, "D" => 3,
+                 "E" => 4, "F" => 5, "G" => 6, "H" => 7 }
   def initialize (color)
     @color = color
   end
@@ -17,29 +19,29 @@ class HumanPlayer
 
   def get_move(board)
     puts "Please enter the position of the piece to move: "
-    start_pos = gets.chomp.split(/[, ]+/)
-    validate_input(start_pos)
-    start_pos.map!(&:to_i)
+    start_pos = parse_input
     raise PieceError.new("No piece present") if board[start_pos].nil?
     unless board[start_pos].color == @color
       raise PieceError.new("Wrong piece color")
     end
-
     puts "Please enter the position you would like to move to: "
-    end_pos = gets.chomp.split(/[, ]+/)
-    validate_input(end_pos)
-    end_pos.map!(&:to_i)
-
+    end_pos = parse_input
     [start_pos, end_pos]
   end
 
   def validate_input(pos)
-    unless pos.length == 2 && pos.all? { |el| el.match(/\A\d+\Z/) }
-      raise ParsingError.new("Please input two comma separated indices")
+    unless pos.match(/\A[a-hA-H][1-8]\Z/)
+      raise ParsingError.new("Please input in format A1")
     end
   end
 
   def make_move(positions, board)
     board.move(positions[0], positions[1])
+  end
+
+  def parse_input
+    start_pos = gets.chomp.strip
+    validate_input(start_pos)
+    [8 - start_pos[1].to_i, INPUT_HASH[start_pos[0].upcase]]
   end
 end

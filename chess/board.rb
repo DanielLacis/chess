@@ -140,8 +140,15 @@ class Board
   end
 
   def render
-    render_string = ""
+    letters = ("A".."H").to_a
+    numbers = ("1".."8").to_a.reverse
+    render_string = "  "
+    letters.each do |letter|
+      render_string << "#{letter} "
+    end
+    render_string << "\n"
     @board.each_with_index do |row, row_idx|
+      render_string << "#{numbers[row_idx]} "
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
         render_string << (empty?(pos) ? "_ " : self[pos].symbol + " ")

@@ -26,10 +26,15 @@ class Game
       puts "#{@next_turn_color} won the game."
     else
       puts "Stalemate"
-    end 
+    end
   end
 
   def switch_turn
     @next_turn_color = (@next_turn_color == :white ? :black : :white)
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  g = Game.new
+  g.play
 end
