@@ -1,19 +1,25 @@
 class SteppingPiece < Piece
-  def initialize(color, position, board, deltas)
+  def initialize(color, position, board)
     super(color, position, board)
-    @deltas = deltas
+  end
+
+  def deltas
+    raise NotImplementedError
   end
 
   def moves
-    possible_moves.select { |move| @board.step_valid?(move, @color) }
+    possible_moves.select do |move|
+      @board.on_board?(move) && (@board.empty?(move) ||
+       @board.piece_color(move) != @color)
+    end
   end
 
   def possible_moves
-    result = []
-    @deltas.each do |delta|
-      result << sum_positions(@position, delta)
+    potential_moves = []
+    deltas.each do |delta|
+      potential_moves << sum_positions(@position, delta)
     end
-    result
+    potential_moves
   end
 
 end

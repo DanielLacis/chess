@@ -1,22 +1,21 @@
 class SlidingPiece < Piece
-  
-  def initialize(color, position, board, vectors)
+
+  def initialize(color, position, board)
     super(color, position, board)
-    @vectors = vectors
   end
 
   def moves
-    result = []
-    @vectors.each do |vector|
-      result += vector_moves(vector)
+    legal_moves = []
+    vectors.each do |vector|
+      legal_moves += vector_moves(vector)
     end
-    result
+    legal_moves
   end
 
   def vector_moves(vector)
     scaled_moves = []
 
-    (1..7).each do |scalar|
+    (1...@board.size).each do |scalar|
       temporary_move = sum_positions(@position, multiply_scalar(vector, scalar))
       return scaled_moves unless @board.on_board?(temporary_move)
 
@@ -30,7 +29,11 @@ class SlidingPiece < Piece
     scaled_moves
   end
 
-  def multiply_scalar(vector, scalar)
+  def vectors
+    raise NotImplementedError
+  end
+
+  def multiply_scalar(vector, scalar) # MOVE TO Util CLASS???
     vector.map { |element| element * scalar }
   end
 end

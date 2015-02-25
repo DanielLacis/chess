@@ -8,7 +8,7 @@ class Pawn < Piece
 
   def initialize(color, position, board)
     super(color, position, board)
-    set_symbol
+    @symbol = @color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
     @moved = false
     @deltas = DELTAS[color]
     @attacks = ATTACKS[color]
@@ -18,45 +18,41 @@ class Pawn < Piece
     if @moved
       standard_moves + attack_moves
     else
-      @moved = false
+      @moved = true
       first_moves + attack_moves
     end
   end
 
   def first_moves
-    valid_moves = standard_moves
-    unless valid_moves.empty?
+    legal_moves = standard_moves
+    unless legal_moves.empty?
       current_move = sum_positions(@position, @deltas.last)
-      valid_moves << current_move if valid_move?(current_move)
+      legal_moves << current_move if legal_move?(current_move)
     end
-    valid_moves
+    legal_moves
   end
 
   def standard_moves
-    valid_moves = []
+    legal_moves = []
     current_move = sum_positions(@position, @deltas.first)
-    valid_moves << current_move if valid_move?(current_move)
-    valid_moves
+    legal_moves << current_move if legal_move?(current_move)
+    legal_moves
   end
 
   def attack_moves
-    valid_moves = []
+    legal_moves = []
     @attacks.each do |attack|
       current_move = sum_positions(@position, attack)
-      valid_moves << current_move if valid_attack?(current_move)
+      legal_moves << current_move if legal_attack?(current_move)
     end
-    valid_moves
+    legal_moves
   end
 
-  def valid_move?(pos)
+  def legal_move?(pos)
     @board.on_board?(pos) && @board.empty?(pos)
   end
 
-  def valid_attack?(pos)
+  def legal_attack?(pos)
     @board.on_board?(pos) && !@board.empty?(pos) && @board.piece_color(pos) != @color
-  end
-
-  def set_symbol
-    @symbol = @color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
   end
 end

@@ -1,9 +1,10 @@
 class Piece
-  attr_reader :color, :position, :board
+  attr_accessor :position
+  attr_reader :board, :color
 
   def initialize(color, position, board)
     @color = color
-    @position = position #[x,y]
+    @position = position #[down, right]
     @board = board
   end
 
@@ -15,7 +16,7 @@ class Piece
     raise NotImplementedError.new
   end
 
-  def sum_positions(pos, delta)
+  def sum_positions(pos, delta) # SHOULD BE CLASS METHOD
     [pos[0] + delta[0], pos[1] + delta[1]]
   end
 end
