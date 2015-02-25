@@ -140,6 +140,7 @@ class Board
   end
 
   def render
+    background_array = [:light_red, :light_blue]
     letters = ("a".."h").to_a
     numbers = ("1".."8").to_a.reverse
     render_string = "  "
@@ -151,9 +152,12 @@ class Board
       render_string << "#{numbers[row_idx]} "
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
-        render_string << (empty?(pos) ? "_ " : self[pos].symbol + " ")
+        output = (empty?(pos) ? "  " : self[pos].symbol + " ")
+        background_idx = (col_idx % 2 + row_idx % 2) % 2
+        output = output.colorize(:background => background_array[background_idx])
+        render_string << output
       end
-      render_string << "#{numbers[row_idx]}\n"
+      render_string << " #{numbers[row_idx]}\n"
     end
     render_string << "  "
     letters.each do |letter|
@@ -161,4 +165,30 @@ class Board
     end
     render_string << "\n"
   end
+
+  def flip_background
+  end
+  #
+  # def render
+  #   letters = ("a".."h").to_a
+  #   numbers = ("1".."8").to_a.reverse
+  #   render_string = "  "
+  #   letters.each do |letter|
+  #     render_string << "#{letter} "
+  #   end
+  #   render_string << "\n"
+  #   @board.each_with_index do |row, row_idx|
+  #     render_string << "#{numbers[row_idx]} "
+  #     row.each_index do |col_idx|
+  #       pos = [row_idx, col_idx]
+  #       render_string << (empty?(pos) ? "_ " : self[pos].symbol + " ")
+  #     end
+  #     render_string << "#{numbers[row_idx]}\n"
+  #   end
+  #   render_string << "  "
+  #   letters.each do |letter|
+  #     render_string << "#{letter} "
+  #   end
+  #   render_string << "\n"
+  # end
 end

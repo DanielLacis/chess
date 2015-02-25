@@ -7,7 +7,7 @@ class Knight < SteppingPiece
 
   def initialize(color, position, board)
     super
-    @symbol = @color == :white ? ["2658".hex].pack("U") : ["265E".hex].pack("U")
+    @symbol = piece_colorize(["265E".hex].pack("U"))
   end
 
   private

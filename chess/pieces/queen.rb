@@ -5,7 +5,7 @@ class Queen < SlidingPiece
 
   def initialize(color, position, board)
     super
-    @symbol = @color == :white ? ["2655".hex].pack("U") : ["265B".hex].pack("U")
+    @symbol = piece_colorize(["265B".hex].pack("U"))
   end
 
   private

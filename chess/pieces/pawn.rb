@@ -10,7 +10,7 @@ class Pawn < Piece
 
   def initialize(color, position, board)
     super
-    @symbol = @color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
+    @symbol = piece_colorize(["265F".hex].pack("U"))
     @moved = false
     @deltas = DELTAS[color]
     @attacks = ATTACKS[color]

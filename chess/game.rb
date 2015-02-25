@@ -4,6 +4,7 @@ require_relative './pieces'
 require_relative './errors'
 require 'yaml'
 require 'byebug'
+require 'colorize'
 
 class Game
   def initialize

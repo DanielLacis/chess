@@ -5,7 +5,7 @@ class Rook < SlidingPiece
 
   def initialize(color, position, board)
     super
-    @symbol = @color == :white ? ["2656".hex].pack("U") : ["265C".hex].pack("U")
+    @symbol = piece_colorize(["265C".hex].pack("U"))
   end
 
   private

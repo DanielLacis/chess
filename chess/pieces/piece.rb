@@ -16,6 +16,10 @@ class Piece
     @board = board
   end
 
+  def piece_colorize(char)
+    @color == :black ? char.colorize(:black) : char.colorize(:light_white)
+  end
+
   def symbol
     raise NotImplementedError.new
   end
