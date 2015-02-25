@@ -32,12 +32,14 @@ class Board
     self[[7, 1]] = Knight.new(:white, [7, 1], self)
     self[[7, 2]] = Bishop.new(:white, [7, 2], self)
     self[[7, 3]] = Queen.new(:white, [7, 3], self)
-    # self[[7, 4]] = King.new(:white, [7, 4], self)
+    self[[7, 4]] = King.new(:white, [7, 4], self)
     self[[7, 5]] = Bishop.new(:white, [7, 5], self)
     self[[7, 6]] = Knight.new(:white, [7, 6], self)
     self[[7, 7]] = Rook.new(:white, [7, 7], self)
 
-    self[[3, 4]] = King.new(:white, [3, 4], self)
+    # self[[0, 0]] = King.new(:white, [0, 0], self)
+    # self[[1, 2]] = Queen.new(:black, [1, 2], self)
+    # self[[2, 2]] = King.new(:black, [2, 2], self)
   end
 
   def move(start_pos, end_pos)
@@ -54,7 +56,7 @@ class Board
     raise "No piece there" if empty?(start_pos)
     raise "Invalid move" unless self[start_pos].moves.include?(end_pos)
     if self[start_pos].move_into_check?(end_pos)
-      raise "Can't move yourself into Check"
+      raise "Can't end turn in Check"
     end
   end
 
@@ -63,6 +65,27 @@ class Board
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
     self[end_pos].moved = true if self[end_pos].is_a?(Pawn)
+  end
+
+  def checkmate?(color)
+    over?(color) && in_check?(color)
+  end
+
+  def over?(color)
+    king_pos = find_king(color)
+
+    @board.each_with_index do |row, row_idx|
+      row.each_index do |col_idx|
+        pos = [row_idx, col_idx]
+
+        if !self[pos].nil? && self[pos].color == color
+          self[pos].moves.each do |move|
+            return false unless self[pos].move_into_check?(move)
+          end
+        end
+      end
+    end
+    true
   end
 
   def in_check?(color)
