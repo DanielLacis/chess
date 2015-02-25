@@ -73,11 +73,9 @@ class Board
 
   def over?(color)
     king_pos = find_king(color)
-
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
-
         if !self[pos].nil? && self[pos].color == color
           self[pos].moves.each do |move|
             return false unless self[pos].move_into_check?(move)
