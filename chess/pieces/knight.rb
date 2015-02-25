@@ -13,4 +13,8 @@ class Knight < SteppingPiece
   def deltas
     DELTAS
   end
+
+  def dup
+    Knight.new(@color, @position.dup, nil)
+  end
 end

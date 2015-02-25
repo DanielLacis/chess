@@ -11,4 +11,8 @@ class Queen < SlidingPiece
   def vectors
     VECTORS
   end
+
+  def dup
+    Queen.new(@color, @position.dup, nil)
+  end
 end

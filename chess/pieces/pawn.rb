@@ -18,7 +18,6 @@ class Pawn < Piece
     if @moved
       standard_moves + attack_moves
     else
-      @moved = true
       first_moves + attack_moves
     end
   end
@@ -54,5 +53,9 @@ class Pawn < Piece
 
   def legal_attack?(pos)
     @board.on_board?(pos) && !@board.empty?(pos) && @board.piece_color(pos) != @color
+  end
+
+  def dup
+    Pawn.new(@color, @position.dup, nil)
   end
 end

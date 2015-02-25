@@ -11,4 +11,8 @@ class Rook < SlidingPiece
   def vectors
     VECTORS
   end
+
+  def dup
+    Rook.new(@color, @position.dup, nil)
+  end
 end

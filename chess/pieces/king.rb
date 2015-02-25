@@ -13,4 +13,8 @@ class King < SteppingPiece
   def deltas
     DELTAS
   end
+
+  def dup
+    King.new(@color, @position.dup, nil)
+  end
 end

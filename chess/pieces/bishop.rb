@@ -11,4 +11,8 @@ class Bishop < SlidingPiece
   def vectors
     VECTORS
   end
+
+  def dup
+    Bishop.new(@color, @position.dup, nil)
+  end
 end
