@@ -8,6 +8,8 @@ class Bishop < SlidingPiece
     @symbol = @color == :white ? ["2657".hex].pack("U") : ["265D".hex].pack("U")
   end
 
+  private
+
   def vectors
     VECTORS
   end

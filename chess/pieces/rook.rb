@@ -8,6 +8,8 @@ class Rook < SlidingPiece
     @symbol = @color == :white ? ["2656".hex].pack("U") : ["265C".hex].pack("U")
   end
 
+  private
+
   def vectors
     VECTORS
   end

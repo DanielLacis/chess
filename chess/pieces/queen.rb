@@ -8,6 +8,8 @@ class Queen < SlidingPiece
     @symbol = @color == :white ? ["2655".hex].pack("U") : ["265B".hex].pack("U")
   end
 
+  private
+
   def vectors
     VECTORS
   end

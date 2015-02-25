@@ -10,6 +10,8 @@ class Knight < SteppingPiece
     @symbol = @color == :white ? ["2658".hex].pack("U") : ["265E".hex].pack("U")
   end
 
+  private
+
   def deltas
     DELTAS
   end

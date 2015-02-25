@@ -1,9 +1,4 @@
 class SteppingPiece < Piece
-
-  def deltas
-    raise NotImplementedError
-  end
-
   def moves
     possible_moves.select do |move|
       @board.on_board?(move) && (@board.empty?(move) ||
@@ -11,7 +6,13 @@ class SteppingPiece < Piece
     end
   end
 
+  private
+
   def possible_moves
-    deltas.map { |delta| sum_positions(@position, delta) }
+    deltas.map { |delta| Piece.sum_positions(@position, delta) }
+  end
+
+  def deltas
+    raise NotImplementedError
   end
 end

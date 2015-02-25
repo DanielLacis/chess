@@ -2,6 +2,14 @@ class Piece
   attr_accessor :position, :board
   attr_reader :color
 
+  def self.sum_positions(pos, delta)
+    [pos[0] + delta[0], pos[1] + delta[1]]
+  end
+
+  def self.multiply_scalar(vector, scalar)
+    vector.map { |element| element * scalar }
+  end
+
   def initialize(color, position, board)
     @color = color
     @position = position #[down, right]
@@ -20,10 +28,6 @@ class Piece
     new_board = @board.dup
     new_board.move_piece(@position, end_pos)
     new_board.in_check?(@color)
-  end
-
-  def sum_positions(pos, delta) # SHOULD BE CLASS METHOD
-    [pos[0] + delta[0], pos[1] + delta[1]]
   end
 
   def dup

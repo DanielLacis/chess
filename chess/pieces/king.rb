@@ -10,6 +10,8 @@ class King < SteppingPiece
     @symbol = @color == :white ? ["2654".hex].pack("U") : ["265A".hex].pack("U")
   end
 
+  private
+
   def deltas
     DELTAS
   end
