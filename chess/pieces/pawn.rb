@@ -1,13 +1,15 @@
 class Pawn < Piece
   DELTAS = { black: [[1, 0], [2, 0]],
              white: [[-1, 0], [-2, 0]]}
+
   ATTACKS = { black: [[1, -1], [1, 1]],
               white: [[-1, -1], [-1, 1]] }
 
   attr_accessor :symbol, :attacks, :moved, :deltas
+  # maybe make some of these readers/remove?
 
   def initialize(color, position, board)
-    super(color, position, board)
+    super
     @symbol = @color == :white ? ["2659".hex].pack("U") : ["265F".hex].pack("U")
     @moved = false
     @deltas = DELTAS[color]
@@ -53,9 +55,5 @@ class Pawn < Piece
 
   def legal_attack?(pos)
     @board.on_board?(pos) && !@board.empty?(pos) && @board.piece_color(pos) != @color
-  end
-
-  def dup
-    Pawn.new(@color, @position.dup, nil)
   end
 end

@@ -1,7 +1,4 @@
 class SteppingPiece < Piece
-  def initialize(color, position, board)
-    super(color, position, board)
-  end
 
   def deltas
     raise NotImplementedError
@@ -15,11 +12,6 @@ class SteppingPiece < Piece
   end
 
   def possible_moves
-    potential_moves = []
-    deltas.each do |delta|
-      potential_moves << sum_positions(@position, delta)
-    end
-    potential_moves
+    deltas.map { |delta| sum_positions(@position, delta) }
   end
-
 end

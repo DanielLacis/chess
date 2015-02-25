@@ -17,7 +17,7 @@ class HumanPlayer
 
   def get_move(board)
     puts "Please enter the position of the piece to move: "
-    start_pos = gets.chomp.split(',')
+    start_pos = gets.chomp.split(/[, ]+/)
     validate_input(start_pos)
     start_pos.map!(&:to_i)
     raise PieceError.new("No piece present") if board[start_pos].nil?
@@ -26,7 +26,7 @@ class HumanPlayer
     end
 
     puts "Please enter the position you would like to move to: "
-    end_pos = gets.chomp.split(',')
+    end_pos = gets.chomp.split(/[, ]+/)
     validate_input(end_pos)
     end_pos.map!(&:to_i)
 

@@ -1,7 +1,7 @@
 class Board
   BOARD_SIZE = 8
 
-  attr_accessor :board
+  attr_reader :board # maybe remove?
 
   def initialize(populate = true)
     create_board
@@ -13,7 +13,6 @@ class Board
   end
 
   def populate_board #color, position, board
-
     (0...BOARD_SIZE).each do |col|
       self[[1, col]] = Pawn.new(:black, [1, col], self)
       self[[6, col]] = Pawn.new(:white, [6, col], self)
@@ -70,6 +69,11 @@ class Board
 
   def over?(color)
     king_pos = find_king(color)
+    # could also use `all` here
+    # pieces.each do |piece|
+    #   return false if piece.moves.all? { |move| piece.move_into_check?(move) }
+    # end
+    # true
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
@@ -83,7 +87,12 @@ class Board
     true
   end
 
+  def pieces(color)
+    @board.flatten.compact.select { |x| x.color == color }
+  end
+
   def in_check?(color)
+    # pieces.any? moves.include? king_pos
     king_pos = find_king(color)
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
@@ -133,7 +142,8 @@ class Board
   end
 
   def on_board?(pos)
-    pos[0].between?(0, BOARD_SIZE - 1) && pos[1].between?(0, BOARD_SIZE - 1)
+    pos.all? { |x| x.between?(0, BOARD_SIZE - 1) }
+    # pos[0].between?(0, BOARD_SIZE - 1) && pos[1].between?(0, BOARD_SIZE - 1)
   end
 
   def empty?(pos)

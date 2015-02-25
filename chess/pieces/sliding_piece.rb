@@ -1,9 +1,4 @@
 class SlidingPiece < Piece
-
-  def initialize(color, position, board)
-    super(color, position, board)
-  end
-
   def moves
     legal_moves = []
     vectors.each do |vector|

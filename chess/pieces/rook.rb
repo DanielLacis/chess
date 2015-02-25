@@ -4,15 +4,11 @@ class Rook < SlidingPiece
   attr_reader :symbol
 
   def initialize(color, position, board)
-    super(color, position, board)
+    super
     @symbol = @color == :white ? ["2656".hex].pack("U") : ["265C".hex].pack("U")
   end
 
   def vectors
     VECTORS
-  end
-
-  def dup
-    Rook.new(@color, @position.dup, nil)
   end
 end

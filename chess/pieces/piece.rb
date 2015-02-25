@@ -27,6 +27,6 @@ class Piece
   end
 
   def dup
-    raise NotImplementedError
+    self.class.new(@color, @position.dup, nil)
   end
 end

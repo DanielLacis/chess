@@ -6,15 +6,11 @@ class Knight < SteppingPiece
   attr_reader :symbol
 
   def initialize(color, position, board)
-    super(color, position, board)
+    super
     @symbol = @color == :white ? ["2658".hex].pack("U") : ["265E".hex].pack("U")
   end
 
   def deltas
     DELTAS
-  end
-
-  def dup
-    Knight.new(@color, @position.dup, nil)
   end
 end
