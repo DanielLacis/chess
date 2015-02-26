@@ -1,6 +1,7 @@
 class HumanPlayer
   INPUT_HASH = { "A" => 0, "B" => 1, "C" => 2, "D" => 3,
                  "E" => 4, "F" => 5, "G" => 6, "H" => 7 }
+
   def initialize (color)
     @color = color
   end
@@ -20,33 +21,25 @@ class HumanPlayer
   end
 
   def get_move(board)
-    puts "Please enter the position of the piece to move: "
-    start_pos = parse_input
+    start_pos = PlayerInput.keyboard_input([0,0], board, @color)
+
     raise PieceError.new("No piece present") if board[start_pos].nil?
+
     unless board[start_pos].color == @color
       raise PieceError.new("Wrong piece color")
     end
 
-    board.valid_moves_display(board[start_pos])
-
-    puts "Please enter the position you would like to move to: "
-    end_pos = parse_input
-    [start_pos, end_pos]
-  end
-
-  def validate_input(pos)
-    unless pos.match(/\A[a-hA-H][1-8]\Z/)
-      raise ParsingError.new("Please input in format A1")
+    if board.no_valid_moves?(board[start_pos])
+      raise PieceError.new("Selected piece has no valid moves")
     end
+
+    board.render(board.valid_moves_for_display(board[start_pos]), [start_pos]) #more to do
+    puts "#{@color}'s turn:"
+    end_pos = PlayerInput.keyboard_input(start_pos, board, @color, true)
+    [start_pos, end_pos]
   end
 
   def make_move(positions, board)
     board.move(positions[0], positions[1])
-  end
-
-  def parse_input
-    start_pos = gets.chomp.strip
-    validate_input(start_pos)
-    [8 - start_pos[1].to_i, INPUT_HASH[start_pos[0].upcase]]
   end
 end

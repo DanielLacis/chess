@@ -1,5 +1,8 @@
 class Board
   BOARD_SIZE = 8
+  BACKGROUND = [:light_red, :light_blue]
+  LETTERS = ("a".."h").to_a
+  NUMBERS = ("1".."8").to_a.reverse
 
   attr_reader :board # maybe remove?
 
@@ -33,9 +36,11 @@ class Board
   end
 
   def over?(color)
-    pieces(color).all? do |piece|
-      piece.moves.all? { |move| piece.move_into_check?(move) }
-    end
+    pieces(color).all? { |piece| no_valid_moves?(piece) }
+  end
+
+  def no_valid_moves?(piece)
+    piece.moves.all? { |move| piece.move_into_check?(move) }
   end
 
   def in_check?(color)
@@ -79,8 +84,29 @@ class Board
     new_board
   end
 
-  def valid_moves_display(piece)
-    print render(piece.moves.select { |move| !piece.move_into_check?(move) })
+  def valid_moves_for_display(piece)
+    piece.moves.select { |move| !piece.move_into_check?(move) }
+  end
+
+  def render(special_colorize = [], cursor = [])
+    system('clear')
+    render_string = "  "
+    render_string << LETTERS.join(" ")
+    render_string << "\n"
+
+    @board.each_with_index do |row, row_idx|
+      render_string << "#{NUMBERS[row_idx]} "
+      row.each_index do |col_idx|
+        pos = [row_idx, col_idx]
+        render_string << render_helper(pos, special_colorize, cursor)
+      end
+      render_string << " #{NUMBERS[row_idx]}\n"
+    end
+
+    render_string << "  "
+    render_string << LETTERS.join(" ")
+    render_string << "\n"
+    puts render_string
   end
 
   private
@@ -143,31 +169,16 @@ class Board
     @board.flatten.compact.select { |x| x.color == color }
   end
 
-  def render(special_colorize = [])
-    background_array = [:light_red, :light_blue]
-    letters = ("a".."h").to_a
-    numbers = ("1".."8").to_a.reverse
-    render_string = "  "
-    letters.each do |letter|
-      render_string << "#{letter} "
+  def render_helper(pos, special_colorize, cursor)
+    output = (empty?(pos) ? "  " : self[pos].symbol + " ")
+    background_idx = (pos[0] + pos[1]) % 2
+    if cursor.include?(pos)
+      output.colorize(:background => :yellow)
+    elsif special_colorize.include?(pos)
+      output.colorize(:background => :green)
+    else
+      output.colorize(:background => BACKGROUND[background_idx])
     end
-    render_string << "\n"
-    @board.each_with_index do |row, row_idx|
-      render_string << "#{numbers[row_idx]} "
-      row.each_index do |col_idx|
-        pos = [row_idx, col_idx]
-        output = (empty?(pos) ? "  " : self[pos].symbol + " ")
-        background_idx = (col_idx % 2 + row_idx % 2) % 2
-        output = output.colorize(:background => background_array[background_idx])
-        output = output.colorize(:background => :green) if special_colorize.include?(pos)
-        render_string << output
-      end
-      render_string << " #{numbers[row_idx]}\n"
-    end
-    render_string << "  "
-    letters.each do |letter|
-      render_string << "#{letter} "
-    end
-    render_string << "\n"
   end
+
 end

@@ -2,6 +2,7 @@ require_relative './board'
 require_relative './player'
 require_relative './pieces'
 require_relative './errors'
+require_relative './input'
 require 'yaml'
 require 'byebug'
 require 'colorize'
@@ -16,12 +17,12 @@ class Game
 
   def play
     until @game_board.over?(@next_turn_color)
-      @game_board.display
+      @game_board.render
       puts "#{@next_turn_color}'s turn: "
       @players[@next_turn_color].play_turn(@game_board)
       switch_turn
     end
-    @game_board.display
+    @game_board.render
     if @game_board.checkmate?(@next_turn_color)
       switch_turn
       puts "#{@next_turn_color} won the game."
