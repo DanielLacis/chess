@@ -48,10 +48,6 @@ class Board
     pieces(other_color(color)).any? { |piece| piece.moves.include?(king_pos) }
   end
 
-  def display
-    print render
-  end
-
   def on_board?(pos)
     pos.all? { |x| x.between?(0, BOARD_SIZE - 1) }
   end

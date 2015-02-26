@@ -33,8 +33,8 @@ class PlayerInput
         return arr
       when "\r" # return
         return arr
-      # when "\e" # escape
-      #   return nil
+      when "\e" # escape
+        return nil
       when "\e[A" # up arrow
         # cursor up (if possible)
         arr[0] -= 1 if arr[0] > 0

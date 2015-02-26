@@ -10,11 +10,7 @@ class HumanPlayer
     begin
       make_move(get_move(board), board)
     rescue PieceError => e
-      board.display
-      puts e
-      retry
-    rescue ParsingError => e
-      board.display
+      board.render
       puts e
       retry
     end
@@ -22,6 +18,7 @@ class HumanPlayer
 
   def get_move(board)
     start_pos = PlayerInput.keyboard_input([0,0], board, @color)
+    raise EndOfGameError if start_pos.nil?
 
     raise PieceError.new("No piece present") if board[start_pos].nil?
 
