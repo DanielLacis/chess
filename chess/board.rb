@@ -21,27 +21,8 @@ class Board
 
   def move(start_pos, end_pos)
     validate_move(start_pos, end_pos)
-    if self[start_pos].is_a?(King)
-      if self[start_pos].castle_moves.include?(end_pos)
-        castle(start_pos, end_pos)
-      end
-    else
-      move_piece(start_pos, end_pos)
-    end
+    move_piece(start_pos, end_pos)
   end
-
-  def castle(start_pos, end_pos)
-    if end_pos[1] > start_pos[1] #going right
-      move_piece(start_pos, end_pos)
-      rook = Piece.sum_positions(end_pos, [0, 1])
-      move_piece(rook, Piece.sum_positions(rook, [0, -2]))
-    else
-      move_piece(start_pos, end_pos)
-      rook = Piece.sum_positions(end_pos, [0, -2])
-      move_piece(rook, Piece.sum_positions(rook, [0, 3]))
-    end
-  end
-
 
   def move_piece(start_pos, end_pos)
     self[start_pos].position = end_pos
