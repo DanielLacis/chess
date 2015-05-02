@@ -8,16 +8,15 @@ class Pawn < Piece
   attr_accessor :symbol, :attacks, :moved, :deltas
   # maybe make some of these readers/remove?
 
-  def initialize(color, position, board)
+  def initialize(color, position, board, has_moved)
     super
     @symbol = piece_colorize(["265F".hex].pack("U"))
-    @moved = false
     @deltas = DELTAS[color]
     @attacks = ATTACKS[color]
   end
 
   def moves
-    if @moved
+    if has_moved?
       standard_moves + attack_moves
     else
       first_moves + attack_moves

@@ -5,7 +5,7 @@ class Knight < SteppingPiece
 
   attr_reader :symbol
 
-  def initialize(color, position, board)
+  def initialize(color, position, board, has_moved)
     super
     @symbol = piece_colorize(["265E".hex].pack("U"))
   end
