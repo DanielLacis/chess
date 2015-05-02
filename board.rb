@@ -4,9 +4,10 @@ class Board
   LETTERS = ("a".."h").to_a
   NUMBERS = ("1".."8").to_a.reverse
 
-  attr_reader :board # maybe remove?
+  attr_reader :board, :turns# maybe remove?
 
-  def initialize(populate = true)
+  def initialize(turns = 0, populate = true)
+    @turns = turns
     create_board
     populate_board if populate
   end
@@ -28,7 +29,17 @@ class Board
     self[start_pos].position = end_pos
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
-    self[end_pos].has_moved = true 
+    self[end_pos].has_moved = true
+    self[end_pos].turns = self[end_pos].turns + 1
+    @turns += 1
+    self[end_pos].last_moved_turn = @turns
+    # #  checks that turn tracking works
+    # puts "self #{end_pos} has #{self[end_pos].turns} turns"
+    # puts "self #{end_pos} last moved turn: ##{self[end_pos].last_moved_turn}"
+    # puts "board has #{@turns} turns"
+
+    # add logic to deal with king
+    # will also have to add for en passant
   end
 
   def checkmate?(color)
@@ -65,7 +76,7 @@ class Board
   end
 
   def dup
-    new_board = Board.new(false)
+    new_board = Board.new(@turns, false)
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]

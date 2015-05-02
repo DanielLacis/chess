@@ -1,5 +1,5 @@
 class Piece
-  attr_accessor :position, :board, :has_moved
+  attr_accessor :position, :board, :has_moved, :turns, :last_moved_turn
   attr_reader :color
 
   def self.sum_positions(pos, delta)
@@ -10,11 +10,13 @@ class Piece
     vector.map { |element| element * scalar }
   end
 
-  def initialize(color, position, board, has_moved)
+  def initialize(color, position, board, has_moved, turns = 0, last_moved_turn = 0)
+    @turns = turns
     @color = color
     @position = position #[down, right]
     @board = board
     @has_moved = has_moved
+    @last_moved_turn = last_moved_turn
   end
 
   def has_moved?
@@ -40,6 +42,6 @@ class Piece
   end
 
   def dup
-    self.class.new(@color, @position.dup, nil, has_moved?)
+    self.class.new(@color, @position.dup, nil, has_moved?, @turns, @last_moved_turn)
   end
 end
