@@ -26,16 +26,22 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
+    en_passant = false
     piece = self[start_pos]
-    # en_passant logic
+    # remove piece rather than overwrite as en passant does not end in this position
+    # if piece.is_a? Pawn
+    # end
+    #
+
+    # en passant logic
     if (piece.is_a? Pawn) && piece.en_passant_moves.include?(end_pos)
-      delta = (piece.color == :black ? [1, 0] : [-1, 0])
-      piece.moved_dist = Piece.dist(start_pos, end_pos)
+      en_passant = true
       self[end_pos] = nil
+      delta = (piece.color == :black ? [1, 0] : [-1, 0])
       end_pos = Piece.sum_positions(end_pos, delta)
     end
+    #
 
-    self[end_pos] = nil
     self[start_pos].position = end_pos
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
@@ -45,14 +51,15 @@ class Board
     @turns += 1
     piece.last_moved_turn = @turns
 
-
-    # #  checks that turn tracking works
-    # puts "self #{end_pos} has #{self[end_pos].turns} turns"
-    # puts "self #{end_pos} last moved turn: ##{self[end_pos].last_moved_turn}"
-    # puts "board has #{@turns} turns"
-
-    # add logic to deal with king
-    # will also have to add for en passant
+    # en passant logic
+    if piece.is_a? Pawn
+      if en_passant
+        piece.moved_dist = 1
+      else
+        piece.moved_dist = Piece.dist(start_pos, end_pos)
+      end
+    end
+    #
   end
 
   def checkmate?(color)

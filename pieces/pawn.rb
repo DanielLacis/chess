@@ -30,26 +30,16 @@ class Pawn < Piece
 
   def en_passant_moves
     legal_moves = []
-    # puts "hello world"
-    # debugger
-    # puts "*** #{@position} ***"
-    # puts "**** #{Piece.sum_positions(@position, [0, -1])} ****"
-    # possibles_pos = [Piece.sum_positions(@position, [0, -1]), Piece.sum_positions(@position, [0, 1])]
-    # p possibles_pos
+
     possibles_pos = [[0, 1], [0, -1]]
     possibles_pos.each do |pos|
       possible_move = Piece.sum_positions(@position, pos)
-      # p @position
-      # debugger
       if (possible_move[1] > 0 && possible_move[1] < 8)  && @board[possible_move].is_a?(Pawn) &&
           (self.last_moved_turn <  @board[possible_move].last_moved_turn) &&
           en_passantable?(possible_move)
         legal_moves << possible_move
       end
     end
-    puts "legal moves"
-    p legal_moves
-    puts legal_moves.length
 
     legal_moves
   end
