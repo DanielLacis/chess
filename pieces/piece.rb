@@ -10,6 +10,10 @@ class Piece
     vector.map { |element| element * scalar }
   end
 
+  def self.dist(pos1, pos2)
+    (pos1[0] - pos2[0]).abs + (pos1[1]-pos2[1]).abs
+  end
+
   def initialize(color, position, board, has_moved, turns = 0, last_moved_turn = 0)
     @turns = turns
     @color = color

@@ -29,10 +29,16 @@ class Board
     self[start_pos].position = end_pos
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
-    self[end_pos].has_moved = true
-    self[end_pos].turns = self[end_pos].turns + 1
+    piece = self[end_pos]
+    piece.has_moved = true
+    piece.turns = piece.turns + 1
     @turns += 1
-    self[end_pos].last_moved_turn = @turns
+    piece.last_moved_turn = @turns
+    if piece.is_a? Pawn
+      piece.moved_dist = Piece.dist(start_pos, end_pos)
+    end
+
+
     # #  checks that turn tracking works
     # puts "self #{end_pos} has #{self[end_pos].turns} turns"
     # puts "self #{end_pos} last moved turn: ##{self[end_pos].last_moved_turn}"
