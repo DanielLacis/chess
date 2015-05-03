@@ -26,6 +26,16 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
+    piece = self[start_pos]
+    # en_passant logic
+    if (piece.is_a? Pawn) && piece.en_passant_moves.include?(end_pos)
+      delta = (piece.color == :black ? [1, 0] : [-1, 0])
+      piece.moved_dist = Piece.dist(start_pos, end_pos)
+      self[end_pos] = nil
+      end_pos = Piece.sum_positions(end_pos, delta)
+    end
+
+    self[end_pos] = nil
     self[start_pos].position = end_pos
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
@@ -34,9 +44,6 @@ class Board
     piece.turns = piece.turns + 1
     @turns += 1
     piece.last_moved_turn = @turns
-    if piece.is_a? Pawn
-      piece.moved_dist = Piece.dist(start_pos, end_pos)
-    end
 
 
     # #  checks that turn tracking works

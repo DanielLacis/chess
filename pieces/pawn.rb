@@ -28,24 +28,6 @@ class Pawn < Piece
     self.class.new(@color, @position.dup, nil, has_moved?, @turns, @last_moved_turn, @moved_dist)
   end
 
-  private
-
-  def first_moves
-    legal_moves = standard_moves
-    unless legal_moves.empty?
-      current_move = Piece.sum_positions(@position, @deltas.last)
-      legal_moves << current_move if legal_move?(current_move)
-    end
-    legal_moves
-  end
-
-  def standard_moves
-    legal_moves = []
-    current_move = Piece.sum_positions(@position, @deltas.first)
-    legal_moves << current_move if legal_move?(current_move)
-    legal_moves
-  end
-
   def en_passant_moves
     legal_moves = []
     # puts "hello world"
@@ -71,6 +53,26 @@ class Pawn < Piece
 
     legal_moves
   end
+
+  private
+
+  def first_moves
+    legal_moves = standard_moves
+    unless legal_moves.empty?
+      current_move = Piece.sum_positions(@position, @deltas.last)
+      legal_moves << current_move if legal_move?(current_move)
+    end
+    legal_moves
+  end
+
+  def standard_moves
+    legal_moves = []
+    current_move = Piece.sum_positions(@position, @deltas.first)
+    legal_moves << current_move if legal_move?(current_move)
+    legal_moves
+  end
+
+
 
   def attack_moves
     legal_moves = []
