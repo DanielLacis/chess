@@ -60,7 +60,7 @@ class PlayerInput
       board.render(valid_moves, [arr])
       puts "#{color}'s turn:"
     end
-    raise RuntimeError.new("why are you here")
+    raise RuntimeError.new("this should not happen")
   end
 end
 

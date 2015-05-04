@@ -60,6 +60,15 @@ class Board
       end
     end
     #
+
+    # pawn promotion
+    if (piece.is_a? Pawn) && end_pos[0] % 7 == 0
+      # prompt for choice of piece (display list and select?)
+      # in the meantime, straight promotion to queen
+      self[end_pos] = Queen.new(piece.color, piece.position, piece.board, piece.has_moved, piece.turns, piece.last_moved_turn);
+    end
+    #
+
   end
 
   def checkmate?(color)
