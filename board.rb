@@ -6,10 +6,11 @@ class Board
 
   attr_reader :board, :turns# maybe remove?
 
-  def initialize(turns = 0, populate = true)
+  def initialize(turns = 0, populate = true, duped = false)
     @turns = turns
     create_board
     populate_board if populate
+    @duped = duped
   end
 
   def [](pos)
@@ -62,13 +63,21 @@ class Board
     #
 
     # pawn promotion
-    if (piece.is_a? Pawn) && end_pos[0] % 7 == 0
+    if (piece.is_a? Pawn) && end_pos[0] % 7 == 0 && !duped?
       # prompt for choice of piece (display list and select?)
       # in the meantime, straight promotion to queen
-      self[end_pos] = Queen.new(piece.color, piece.position, piece.board, piece.has_moved, piece.turns, piece.last_moved_turn);
+      flag = true
+      pieces = {"queen" => true, "knight" => true, "rook" => true,
+                "bishop" => true}
+      while flag
+        puts "enter type of piece desired: (Knight, Queen, Rook, Bishop)"
+        input = gets.downcase.chomp
+        if pieces[input]
+          self[end_pos] = promote_pawn_piece(input, piece);
+          flag = false
+        end
+      end
     end
-    #
-
   end
 
   def checkmate?(color)
@@ -105,7 +114,7 @@ class Board
   end
 
   def dup
-    new_board = Board.new(@turns, false)
+    new_board = Board.new(@turns, false, true)
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
@@ -217,4 +226,24 @@ class Board
     end
   end
 
+  def duped?
+    @duped
+  end
+
+  def promote_pawn_piece input, piece
+    case input
+    when "queen"
+      return Queen.new(piece.color, piece.position, piece.board,
+                       piece.has_moved, piece.turns, piece.last_moved_turn)
+    when "knight"
+      return Knight.new(piece.color, piece.position, piece.board,
+                      piece.has_moved, piece.turns, piece.last_moved_turn)
+    when "rook"
+      return Rook.new(piece.color, piece.position, piece.board,
+                      piece.has_moved, piece.turns, piece.last_moved_turn)
+    when "bishop"
+      return Bishop.new(piece.color, piece.position, piece.board,
+                      piece.has_moved, piece.turns, piece.last_moved_turn)
+    end
+  end
 end
