@@ -29,10 +29,6 @@ class Board
   def move_piece(start_pos, end_pos)
     en_passant = false
     piece = self[start_pos]
-    # remove piece rather than overwrite as en passant does not end in this position
-    # if piece.is_a? Pawn
-    # end
-    #
 
     # en passant logic
     if (piece.is_a? Pawn) && piece.en_passant_moves.include?(end_pos)
@@ -41,8 +37,17 @@ class Board
       delta = (piece.color == :black ? [1, 0] : [-1, 0])
       end_pos = Piece.sum_positions(end_pos, delta)
     end
-    #
 
+    if (piece.is_a? King) && !duped? && piece.castling_moves.include?(end_pos)
+      if end_pos[1] == 7
+        rook_pos = [start_pos[0], start_pos[1] + 1]
+        self[rook_pos] = self[end_pos]
+        self[end_pos] = nil
+        end_pos[1] = 6
+      else
+
+      end
+    end
     self[start_pos].position = end_pos
     self[end_pos] = self[start_pos]
     self[start_pos] = nil
@@ -64,8 +69,6 @@ class Board
 
     # pawn promotion
     if (piece.is_a? Pawn) && end_pos[0] % 7 == 0 && !duped?
-      # prompt for choice of piece (display list and select?)
-      # in the meantime, straight promotion to queen
       flag = true
       pieces = {"queen" => true, "knight" => true, "rook" => true,
                 "bishop" => true}
@@ -78,6 +81,8 @@ class Board
         end
       end
     end
+    #
+
   end
 
   def checkmate?(color)
@@ -160,7 +165,7 @@ class Board
     @board = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
   end
 
-  def populate_board #color, position, board
+  def populate_board
     (0...BOARD_SIZE).each do |col|
       self[[1, col]] = Pawn.new(:black, [1, col], self, false)
       self[[6, col]] = Pawn.new(:white, [6, col], self, false)
@@ -183,11 +188,6 @@ class Board
     self[[7, 5]] = Bishop.new(:white, [7, 5], self, false)
     self[[7, 6]] = Knight.new(:white, [7, 6], self, false)
     self[[7, 7]] = Rook.new(:white, [7, 7], self, false)
-
-    # # near stalemate/checkmate
-    # self[[0, 0]] = King.new(:white, [0, 0], self, false)
-    # self[[1, 2]] = Queen.new(:black, [1, 2], self, false)
-    # self[[2, 2]] = King.new(:black, [2, 2], self, false)
   end
 
   def other_color(color)
@@ -202,10 +202,14 @@ class Board
   end
 
   def validate_move(start_pos, end_pos)
-    unless self[start_pos].moves.include?(end_pos)
+    piece = self[start_pos]
+    if piece.is_a?(King) && piece.castling_moves.include?(end_pos)
+      return true
+    end
+    unless piece.moves.include?(end_pos)
       raise PieceError.new("Invalid move")
     end
-    if self[start_pos].move_into_check?(end_pos)
+    if piece.move_into_check?(end_pos)
       raise PieceError.new("Can't end turn in Check")
     end
   end
@@ -237,13 +241,13 @@ class Board
                        piece.has_moved, piece.turns, piece.last_moved_turn)
     when "knight"
       return Knight.new(piece.color, piece.position, piece.board,
-                      piece.has_moved, piece.turns, piece.last_moved_turn)
+                        piece.has_moved, piece.turns, piece.last_moved_turn)
     when "rook"
       return Rook.new(piece.color, piece.position, piece.board,
                       piece.has_moved, piece.turns, piece.last_moved_turn)
     when "bishop"
       return Bishop.new(piece.color, piece.position, piece.board,
-                      piece.has_moved, piece.turns, piece.last_moved_turn)
+                        piece.has_moved, piece.turns, piece.last_moved_turn)
     end
   end
 end
