@@ -17,23 +17,31 @@ class King < SteppingPiece
   def castling_moves
     valid_moves = []
     if last_moved_turn == 0
-      right_rook_pos = Piece.sum_positions(position, [0,3])
+      right_rook_pos = Piece.sum_positions(position, [0, 3])
       left_rook_pos = Piece.sum_positions(position, [0, -4])
       right_rook = @board[right_rook_pos]
       left_rook = @board[left_rook_pos]
       if right_rook.is_a?(Rook) && right_rook.last_moved_turn == 0
-        step1 = Piece.sum_positions(position, [0,1])
-        step2 = Piece.sum_positions(position, [0,2])
+        step1 = Piece.sum_positions(position, [0, 1])
+        step2 = Piece.sum_positions(position, [0, 2])
         if @board.empty?(step1) && @board.empty?(step2) &&
            !move_into_check?(step1) && !move_into_check?(step2)
-          valid_moves.push(right_rook_pos)
+          valid_moves.push(step2)
+        end
+      end
+      if left_rook.is_a?(Rook) && left_rook.last_moved_turn == 0
+        step1 = Piece.sum_positions(position, [0, -1])
+        step2 = Piece.sum_positions(position, [0, -2])
+        if @board.empty?(step1) && @board.empty?(step2) &&
+           !move_into_check?(step1) && !move_into_check?(step2)
+          valid_moves.push(step2)
         end
       end
     end
 
     valid_moves
   end
-  
+
   private
 
   def deltas

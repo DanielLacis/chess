@@ -39,13 +39,16 @@ class Board
     end
 
     if (piece.is_a? King) && !duped? && piece.castling_moves.include?(end_pos)
-      if end_pos[1] == 7
-        rook_pos = [start_pos[0], start_pos[1] + 1]
-        self[rook_pos] = self[end_pos]
-        self[end_pos] = nil
-        end_pos[1] = 6
+      if end_pos[1] == 6
+        rook_end_pos = [start_pos[0], start_pos[1] + 1]
+        rook_pos = [end_pos[0], end_pos[1] + 1]
+        self[rook_end_pos] = self[rook_pos]
+        self[rook_pos] = nil
       else
-
+        rook_end_pos = [start_pos[0], start_pos[1] - 1]
+        rook_pos = [end_pos[0], 0]
+        self[rook_end_pos] = self[rook_pos]
+        self[rook_pos] = nil
       end
     end
     self[start_pos].position = end_pos
