@@ -22,6 +22,7 @@ class Game
   def play
     begin
       until @game_board.over?(@next_turn_color)
+        @game_board.color = @next_turn_color
         @game_board.render
         puts "#{@next_turn_color}'s turn: "
         @players[@next_turn_color].play_turn(@game_board)

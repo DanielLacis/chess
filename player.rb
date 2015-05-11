@@ -17,7 +17,8 @@ class HumanPlayer
   end
 
   def get_move(board)
-    start_pos = PlayerInput.keyboard_input([0,0], board, @color)
+    cursor_start = (board.color == :white ? [7, 3] : [0, 3])
+    start_pos = PlayerInput.keyboard_input(cursor_start, board, @color)
     raise EndOfGameError if start_pos.nil?
 
     raise PieceError.new("No piece present") if board[start_pos].nil?
@@ -29,7 +30,6 @@ class HumanPlayer
     if board.no_valid_moves?(board[start_pos])
       raise PieceError.new("Selected piece has no valid moves")
     end
-
     board.render(board.valid_moves_for_display(board[start_pos]), [start_pos]) #more to do
     puts "#{@color}'s turn:"
     end_pos = PlayerInput.keyboard_input(start_pos, board, @color, true)

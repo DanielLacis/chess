@@ -3,14 +3,15 @@ class Board
   BACKGROUND = [:light_red, :light_blue]
   LETTERS = ("a".."h").to_a
   NUMBERS = ("1".."8").to_a.reverse
-
-  attr_reader :board, :turns# maybe remove?
+  attr_accessor :color
+  attr_reader :board, :turns # maybe remove?
 
   def initialize(turns = 0, populate = true, duped = false)
     @turns = turns
     create_board
     populate_board if populate
     @duped = duped
+    @color = 'white'
   end
 
   def [](pos)
@@ -123,6 +124,7 @@ class Board
 
   def dup
     new_board = Board.new(@turns, false, true)
+    new_board.color = @color
     @board.each_with_index do |row, row_idx|
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
@@ -148,6 +150,29 @@ class Board
     render_string << "\n"
 
     @board.each_with_index do |row, row_idx|
+      render_string << "#{NUMBERS[row_idx]} "
+      row.each_index do |col_idx|
+        pos = [row_idx, col_idx]
+        render_string << render_helper(pos, special_colorize, cursor)
+      end
+      render_string << " #{NUMBERS[row_idx]}\n"
+    end
+
+    render_string << "  "
+    render_string << LETTERS.join(" ")
+    render_string << "\n"
+    puts render_string
+  end
+
+  def render_flipped_board(special_colorize = [], cursor = [])
+    system('clear')
+    render_string = "  "
+    render_string << LETTERS.join(" ")
+    render_string << "\n"
+    idx_array = (0..(@board.length-1)).to_a.reverse
+    idx_array.each do |row_idx|
+    # @board.each_with_index do |row, row_idx|
+      row = @board[row_idx]
       render_string << "#{NUMBERS[row_idx]} "
       row.each_index do |col_idx|
         pos = [row_idx, col_idx]
