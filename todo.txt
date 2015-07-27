@@ -1,5 +1,1 @@
 en passant moves show valid move as the pawn square, not the destination
-
-implement castling
-
-implement pawn promotion
